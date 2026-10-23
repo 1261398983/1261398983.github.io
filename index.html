@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RELAY X · 逆向工程 API 网关 — 站点导航与工具索引</title>
+<meta name="description" content="RELAY X 逆向工程 API 网关：国模（DeepSeek 等）+ Claude / GPT / Gemini / Grok 统一 OpenAI 兼容端点。QQ 邮箱注册，按量计费，输入输出分开计价。附配置指南、费用计算器、中转站检测器、错误码对照表。">
+<meta name="keywords" content="RELAY X, 逆向工程 API, 国模 API, DeepSeek API 中转, Claude API 中转, AI API 网关, API 中转站, 按量计费">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://1261398983.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RELAY X · 逆向工程 API 网关">
+<meta property="og:description" content="国模（DeepSeek 等）+ Claude / GPT / Gemini 统一端点。QQ 邮箱注册，按量计费。">
+<meta property="og:url" content="https://1261398983.github.io/">
+<meta property="og:site_name" content="RELAY X">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230b1220'/><path d='M20 46V18h13a10 10 0 0 1 0 20h-6l12 8' stroke='%234d9fff' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+:root{--bg:#0b0e13;--p:#141922;--line:#242c39;--fg:#e7eef8;--dim:#8695aa;--a:#4d9fff;--g:#2ad39b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.7 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:0 0 80px}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+header{padding:56px 0 40px;border-bottom:1px solid var(--line)}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;background:rgba(77,159,255,.12);color:var(--a);font-size:12px;letter-spacing:.08em;margin-bottom:16px}
+h1{font-size:30px;line-height:1.3;margin-bottom:12px;letter-spacing:-.01em}
+.lead{color:var(--dim);font-size:15px;max-width:640px}
+.cta{display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:12px 22px;border-radius:9px;background:var(--a);color:#06121f;font-weight:600;text-decoration:none}
+.cta:hover{opacity:.9}
+section{margin-top:52px}
+h2{font-size:16px;font-weight:600;margin-bottom:20px;padding-left:12px;border-left:3px solid var(--a);line-height:1.4}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+a.card{display:block;padding:16px 18px;background:var(--p);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--fg);transition:border-color .15s}
+a.card:hover{border-color:var(--a)}
+.card .t{font-weight:600;font-size:14px;margin-bottom:4px}
+.card .d{color:var(--dim);font-size:12.5px;line-height:1.55}
+.tools a.card{border-color:rgba(42,211,155,.35)}
+.tools .t{color:var(--g)}
+footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;line-height:1.8}
+pre{background:#0f141d;border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:13px;color:#a8c4e0;margin:14px 0}
+code{background:#1a212c;padding:1px 6px;border-radius:4px;font-size:13px}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"RELAY X","alternateName":["RELAY X 逆向工程中转站","97wl"],"url":"https://1261398983.github.io/","description":"国模（DeepSeek 等）+ Claude / GPT / Gemini / Grok 统一 OpenAI 兼容端点。","inLanguage":"zh-CN"}
+</script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="badge">RELAY X</div>
+  <h1>逆向工程 API 网关</h1>
+  <p class="lead">国模（DeepSeek 等）+ Claude / GPT / Gemini / Grok，收敛成一个 OpenAI 兼容端点。QQ 邮箱注册，按量计费，输入输出分开计价。</p>
+  <a class="cta" href="https://api.97wl.cc/register">QQ 邮箱注册 →</a>
+</header>
+<section>
+  <h2>接入</h2>
+  <pre>export ANTHROPIC_BASE_URL="https://api.97wl.cc"
+export ANTHROPIC_AUTH_TOKEN="sk-你的密钥"
+claude</pre>
+  <p class="lead" style="font-size:13.5px">OpenAI 兼容协议 Base URL 填 <code>https://api.97wl.cc/v1</code>；Anthropic 原生协议删掉结尾 <code>/v1</code>。</p>
+</section>
+<section class="tools">
+  <h2>工具</h2>
+  <div class="grid">
+    <a class="card" href="/ai-api-guide/calc/"><div class="t">费用计算器</div><div class="d">输入调用量算出每月真实花费，含任务分级省钱测算</div></a>
+    <a class="card" href="/ai-api-guide/checker/"><div class="t">中转站检测器</div><div class="d">生成测试命令，粘贴返回 JSON 自动识别模型替换与 token 虚报</div></a>
+    <a class="card" href="/ai-api-guide/status/"><div class="t">服务状态</div><div class="d">每小时自动探测可用率与延迟</div></a>
+    <a class="card" href="/ai-api-guide/errors.html"><div class="t">错误码对照表</div><div class="d">401 / 402 / 429 / 500 逐个排查</div></a>
+  </div>
+</section>
+
+<section>
+  <h2>指南</h2>
+  <div class="grid">
+    <a class="card" href="/ai-api-guide/"><div class="t">配置指南</div><div class="d">Claude Code / Codex CLI / Cursor / Cherry Studio 接入</div></a>
+    <a class="card" href="/ai-api-guide/choosing-relay.html"><div class="t">中转站怎么选</div><div class="d">四条底线、六种套路、可执行的验证命令</div></a>
+    <a class="card" href="/ai-api-guide/migrate-relay.html"><div class="t">迁移清单</div><div class="d">换渠道时不能漏的九个检查点</div></a>
+  </div>
+</section>
+
+<section>
+  <h2>站点</h2>
+  <div class="grid">
+    <a class="card" href="/ai-relay/"><div class="t">AI 公益站大全</div><div class="d">免费额度聚合</div></a>
+    <a class="card" href="/ai-coding-welfare/"><div class="t">AI Coding 福利站</div><div class="d">编程工具免费额度</div></a>
+    <a class="card" href="/ai-coding-free-sites/"><div class="t">免费额度站点</div><div class="d">实测清单</div></a>
+    <a class="card" href="/ai-welfare-hub/"><div class="t">福利聚合</div><div class="d">Claude Code / Codex 额度</div></a>
+    <a class="card" href="/ai-api-gongyi-nav/"><div class="t">API 公益导航</div><div class="d">公益站目录</div></a>
+    <a class="card" href="/ai-api-zhongzhuan/"><div class="t">中转导航</div><div class="d">公开目录</div></a>
+    <a class="card" href="/ai-api-relay-recommendations/"><div class="t">中转站推荐</div><div class="d">2026 实测</div></a>
+    <a class="card" href="/free-ai-providers/"><div class="t">免费提供商</div><div class="d">目录与对比</div></a>
+    <a class="card" href="/aifreenav/"><div class="t">AI 千里目</div><div class="d">工具与 API 导航</div></a>
+    <a class="card" href="/awesome-chinese-ai-tools/"><div class="t">中文 AI 工具</div><div class="d">Agent Skills 库</div></a>
+    <a class="card" href="/ai-relay-nav/"><div class="t">公益站与中转站</div><div class="d">推荐列表</div></a>
+    <a class="card" href="/awesome-ai-coding-tools/"><div class="t">AI 编程工具</div><div class="d">Awesome 清单</div></a>
+    <a class="card" href="/awesome-ai-api-relay/"><div class="t">API 中转清单</div><div class="d">Awesome 清单</div></a>
+    <a class="card" href="/ai-api-relay-directory/"><div class="t">中转站倍率对照</div><div class="d">倍率表</div></a>
+    <a class="card" href="/awesome-ai-api-proxy/"><div class="t">API Proxy 清单</div><div class="d">Awesome 清单</div></a>
+    <a class="card" href="/free-model-links/"><div class="t">免费模型链接</div><div class="d">资源汇总</div></a>
+    <a class="card" href="/ai-api-proxy-list/"><div class="t">API 代理列表</div><div class="d">公开列表</div></a>
+    <a class="card" href="/ai-relay-verified/"><div class="t">中转站验证</div><div class="d">验证记录</div></a>
+    <a class="card" href="/ai-api-quickstart/"><div class="t">快速接入</div><div class="d">六种工具配置示例</div></a>
+  </div>
+</section>
+
+<section>
+  <h2>关于</h2>
+  <p class="lead" style="font-size:13.5px">本页是站点索引，所有内容为个人整理，与所列第三方服务无隶属关系。模型名称与商标归各自权利人所有。个人运营，不提供 SLA，建议按实际用量充值。</p>
+</section>
+
+<footer>
+  RELAY X · 逆向工程 API 网关 · <a href="https://api.97wl.cc/register" style="color:var(--a)">注册</a> · <a href="https://api.97wl.cc/" style="color:var(--a)">主站</a><br>
+  <span style="opacity:.7">Sitemap index: <a href="/sitemap.xml" style="color:var(--dim)">/sitemap.xml</a></span>
+</footer>
+
+</div>
+</body>
+</html>
