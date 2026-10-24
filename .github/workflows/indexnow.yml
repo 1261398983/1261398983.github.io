@@ -1,0 +1,88 @@
+name: IndexNow
+
+# 作用：把本站 sitemap 索引里所有子站 URL 批量推给 Bing / Yandex，
+# 让新页面在几小时内被重新抓取，而不是等几周。
+# 校验文件：仓库根目录 5274d490c7073e9630ce4cc455bb9c41.txt（内容同 key）
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sitemap.xml'
+      - 'sitemap-root.xml'
+      - 'index.html'
+  schedule:
+    - cron: '17 3 * * *'   # 每天 UTC 03:17
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect URLs from sitemap index
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          const KEY = '5274d490c7073e9630ce4cc455bb9c41';
+          const HOST = '1261398983.github.io';
+          const idx = fs.readFileSync('sitemap.xml', 'utf8');
+          const subs = [...idx.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1].trim());
+          const urls = new Set(subs.filter(u => !u.endsWith('.xml')));
+          fs.writeFileSync('_subs.txt', subs.join('\n'));
+          fs.writeFileSync('_urls.txt', [...urls].join('\n'));
+          console.log('sub-sitemaps:', subs.length, 'direct urls:', urls.size);
+          EOF
+
+      - name: Expand sub-sitemaps
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          const subs = fs.readFileSync('_subs.txt', 'utf8').split('\n').filter(Boolean).filter(u => u.endsWith('.xml'));
+          const urls = new Set(fs.readFileSync('_urls.txt', 'utf8').split('\n').filter(Boolean));
+          for (const s of subs) {
+            try {
+              const r = await fetch(s, { headers: { 'user-agent': 'indexnow-collector' } });
+              if (!r.ok) { console.log('SKIP', r.status, s); continue; }
+              const xml = await r.text();
+              for (const m of xml.matchAll(/<loc>(.*?)<\/loc>/g)) {
+                const u = m[1].trim();
+                if (!u.endsWith('.xml')) urls.add(u);
+              }
+            } catch (e) { console.log('ERR', s, e.message); }
+          }
+          fs.writeFileSync('_urls.txt', [...urls].join('\n'));
+          console.log('total urls:', urls.size);
+          EOF
+
+      - name: Submit to IndexNow
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          const KEY = '5274d490c7073e9630ce4cc455bb9c41';
+          const HOST = '1261398983.github.io';
+          const all = fs.readFileSync('_urls.txt', 'utf8').split('\n').filter(Boolean);
+          const batchSize = 500;
+          let ok = 0, bad = 0;
+          for (let i = 0; i < all.length; i += batchSize) {
+            const urlList = all.slice(i, i + batchSize);
+            const res = await fetch('https://api.indexnow.org/indexnow', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json; charset=utf-8' },
+              body: JSON.stringify({
+                host: HOST,
+                key: KEY,
+                keyLocation: `https://${HOST}/${KEY}.txt`,
+                urlList,
+              }),
+            });
+            console.log(`batch ${i / batchSize + 1}: ${res.status} (${urlList.length} urls)`);
+            if (res.status === 200 || res.status === 202) ok += urlList.length; else bad += urlList.length;
+          }
+          console.log(`submitted ok=${ok} failed=${bad}`);
+          if (bad > 0 && ok === 0) process.exit(1);
+          EOF
